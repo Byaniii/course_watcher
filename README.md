@@ -3,11 +3,11 @@
 A standalone application to monitor FEU Tech course availability and notify you via Telegram the moment a slot opens up.
 
 ## 🚀 Features
-- **Real-time Monitoring**: Automatically polls SOLAR offerings at configurable intervals.
-- **MFA-Aware**: Reuses the Playwright authentication flow to handle Microsoft SSO.
-- **Immediate Notifications**: Sends a detailed message to your Telegram bot when a 0-slot course becomes available.
+- **Passive Monitoring**: Zero-impact polling that reads locally synced course data.
+- **Quiet Mode**: Notifications are ONLY sent if at least one open slot is detected (no more heartbeat spam).
+- **Schedule Maker Integration**: Automatically listens to the `courses.xlsx` file from the Schedule Maker project.
 - **Activity Stream**: Live-scrolling logs via Server-Sent Events (SSE).
-- **Persistent Watchlist**: Saves your monitored courses to `watchlist.json`.
+- **Dynamic Config**: Change your monitoring interval (e.g., 1, 15, 30 mins) in real-time.
 
 ## 🛠️ Setup Instructions
 
@@ -32,12 +32,13 @@ Start both the backend and frontend:
 npm run dev
 ```
 
-## 📋 usage
-1. Open [http://localhost:5173](http://localhost:5173).
-2. Click **Re-Authenticate** to perform the initial login. Approve the MFA on your phone.
-3. Add a course to watch in the format `COURSE-SECTION` (e.g., `CCS0015-TC03`).
-4. Click **Start Watcher**.
-5. Keep the app running (or the server running) to stay updated!
+## 📋 Unified Workflow (Run Both)
+1. **Start Schedule Maker Backend:** Ensure the bridge is running (`node server.js` in scraper folder).
+2. **Start Slot Watcher Backend:** Ensure port 3002 is active.
+3. **Configure Scaling:**
+   - In Schedule Maker UI: Set **Auto-Scrape** to `15 Mins`.
+   - In Slot Watcher UI: Set **Interval** to `15 Mins`.
+4. **Result:** Every 15 minutes, the Scraper updates the file (beams MFA code to your phone), and the Watcher immediately pings you if a slot opened up!
 
 ---
-*Note: This app is standalone and does not interfere with the Schedule Maker project.*
+*Note: The Slot Watcher is now perfectly integrated with the Schedule Maker for ultimate data accuracy.*

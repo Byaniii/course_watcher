@@ -105,6 +105,7 @@ class SlotWatcher {
             let messageLines = ['🗓️ *AUTOMATED SLOT UPDATE*'];
             messageLines.push(`Term: *${this.activeTerm}* | SY: *${this.activeYear}*\n`);
 
+            let anyOpenSlots = false;
             for (const item of this.watchlist) {
                 const courseData = activeCourses.find(c => String(c.course) === String(item.course) && String(c.section) === String(item.section));
                 
@@ -115,6 +116,7 @@ class SlotWatcher {
                 }
 
                 const currentSlots = courseData.remaining;
+                if (currentSlots > 0) anyOpenSlots = true;
                 
                 // Highlight changes
                 if (currentSlots > 0 && item.lastSlots === 0) {
@@ -129,9 +131,10 @@ class SlotWatcher {
                 item.lastChecked = new Date().toLocaleTimeString();
             }
 
-            if (this.watchlist.length > 0) {
-                // Send the summary notification regardless of counts
+            if (anyOpenSlots && this.watchlist.length > 0) {
                 this.notify(messageLines.join('\n'));
+            } else {
+                this.log('Info', 'Check complete: No open slots detected. Skipping notification.', 'gray');
             }
 
         } catch (err) {
