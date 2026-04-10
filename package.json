@@ -1,0 +1,13 @@
+{
+  "name": "slot-watcher",
+  "version": "1.0.0",
+  "description": "FEU Tech Slot Watcher",
+  "scripts": {
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "dev": "concurrently \"cd server && node server.js\" \"cd client && npm run dev\"",
+    "start": "cd server && node server.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
